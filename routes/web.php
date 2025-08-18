@@ -34,7 +34,7 @@ Route::get('/tickets', [TicketsController::class, 'index'])->middleware('auth')-
 Route::post('/tickets/store', [TicketsController::class, 'store'])->middleware('auth')->name('tickets.store');
 Route::get('/tickets/edit/{id}', [TicketsController::class, 'edit'])->middleware('auth')->name('tickets.edit');
 Route::put('/tickets/update/{id}', [TicketsController::class, 'update'])->middleware('auth')->name('tickets.update');
-Route::post('/tickets/destroy/{id}', [TicketsController::class, 'destroy'])->middleware('auth')->name('tickets.destroy');
+Route::delete('/tickets/destroy/{id}', [TicketsController::class, 'destroy'])->middleware('auth')->name('tickets.destroy');
 
 Route::get('/transations', [TransaktionsConroller::class, 'transations'])->middleware('auth')->name('transations');
 Route::get('/transations/pdf', [TransaktionsConroller::class, 'exportPDF'])->middleware('auth')->name('transations.pdf');

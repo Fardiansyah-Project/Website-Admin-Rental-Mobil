@@ -223,7 +223,7 @@ class TicketsController extends Controller
         $ticket->delete();
 
         DriversModel::where('id', $driverId)
-        ->update(['status' => 'Tidak sedang berkendara']);
+        ->update(['status' => 'Tersedia']);
 
         if (!$ticket) {
             return redirect()->route()->with('error_deleted', 'Tiket tidak berhasil dihapus');

@@ -30,48 +30,48 @@ class TicketsModel extends Model
         return $this->belongsTo(DriversModel::class, 'id_driver');
     }
 
-    protected static function boot()
-    {
-        parent::boot();
+    // protected static function boot()
+    // {
+    //     parent::boot();
 
-        // Saat tiket dibuat
-        static::created(function ($ticket) {
-            if ($ticket->status === 'confirmed' && $ticket->driver) {
-                $ticket->driver->update(['status' => 'Aktif']);
-            }
-        });
+    //     // Saat tiket dibuat
+    //     static::created(function ($ticket) {
+    //         if ($ticket->status === 'confirmed' && $ticket->driver) {
+    //             $ticket->driver->update(['status' => 'Aktif']);
+    //         }
+    //     });
 
-        // Saat tiket diupdate
-        static::updated(function ($ticket) {
-            if ($ticket->isDirty('status') && $ticket->driver) {
-                if ($ticket->status === 'confirmed') {
-                    $ticket->driver->update(['status' => 'Aktif']);
-                } else {
-                    $hasOtherConfirmed = self::where('id_driver', $ticket->id_driver)
-                        ->where('status', 'confirmed')
-                        ->where('id', '!=', $ticket->id)
-                        ->exists();
+    //     // Saat tiket diupdate
+    //     static::updated(function ($ticket) {
+    //         if ($ticket->isDirty('status') && $ticket->driver) {
+    //             if ($ticket->status === 'confirmed') {
+    //                 $ticket->driver->update(['status' => 'Aktif']);
+    //             } else {
+    //                 $hasOtherConfirmed = self::where('id_driver', $ticket->id_driver)
+    //                     ->where('status', 'confirmed')
+    //                     ->where('id', '!=', $ticket->id)
+    //                     ->exists();
 
-                    if (!$hasOtherConfirmed) {
-                        $ticket->driver->update(['status' => 'Tidak sedang berkendara']);
-                    }
-                }
-            }
-        });
+    //                 if (!$hasOtherConfirmed) {
+    //                     $ticket->driver->update(['status' => 'Tersedia']);
+    //                 }
+    //             }
+    //         }
+    //     });
 
-        // Saat tiket dihapus
-        static::deleted(function ($ticket) {
-            if ($ticket->driver) {
-                $hasOtherConfirmed = self::where('id_driver', $ticket->id_driver)
-                    ->where('status', 'confirmed')
-                    ->exists();
+    //     // Saat tiket dihapus
+    //     static::deleted(function ($ticket) {
+    //         if ($ticket->driver) {
+    //             $hasOtherConfirmed = self::where('id_driver', $ticket->id_driver)
+    //                 ->where('status', 'confirmed')
+    //                 ->exists();
 
-                if (!$hasOtherConfirmed) {
-                    $ticket->driver->update(['status' => 'Tidak sedang berkendara']);
-                }
-            }
-        });
-    }
+    //             if (!$hasOtherConfirmed) {
+    //                 $ticket->driver->update(['status' => 'Tersedia']);
+    //             }
+    //         }
+    //     });
+    // }
 
     protected static function booted()
     {
@@ -93,13 +93,21 @@ class TicketsModel extends Model
 
     protected static function updateDriverStatus($ticket)
     {
-        if ($ticket->status === 'confirmed') {
-            $ticket->driver?->update(['status' => 'Aktif']);
-        } elseif ($ticket->status === 'success') {
-            $ticket->driver?->update(['status' => 'Tidak sedang berkendara']);
+        $driver = $ticket->driver;
+
+        if (!$driver) {
+            return;
+        }
+
+        $hasConfirmed = $driver->tickets()->where('status', 'confirmed')->exists();
+        $hasSuccess   = $driver->tickets()->where('status', 'success')->exists();
+
+        if ($hasConfirmed) {
+            $driver->update(['status' => 'Aktif']);
         } else {
-            $ticket->driver?->update(['status' => 'Tersedia']);
+            $driver->update(['status' => 'Tersedia']);
         }
     }
+
 
 }
