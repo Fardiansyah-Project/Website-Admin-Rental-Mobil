@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    @include('layouts.head', ['title' => 'Admin Rent'])
+    @include('layouts.head', ['title' => 'B-Trans Family'])
 </head>
 
 <body>

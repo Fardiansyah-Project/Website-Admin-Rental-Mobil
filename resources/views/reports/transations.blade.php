@@ -2,9 +2,9 @@
 @section('content')
     <div class="card mt-4">
         <div class="card-body">
-            <div class="card-title d-flex justify-content-between">
-                <h5 class="card-title fw-semibold mb-4">Data Laporan</h5>
-                <div class="mb-2">
+            <div class="card-title d-flex justify-content-between align-items-center">
+                <h5 class="card-title fw-semibold">Data Laporan</h5>
+                <div class="d-flex gap-2">
                     <a href="{{ route('transations.pdf') }}" class="btn btn-danger">Export PDF</a>
                     <a href="{{ route('transations.excel') }}" class="btn btn-success">Export Excel</a>
                 </div>
