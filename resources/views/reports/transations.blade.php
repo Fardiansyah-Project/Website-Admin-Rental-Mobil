@@ -3,11 +3,14 @@
     <div class="card mt-4">
         <div class="card-body">
             <div class="card-title d-flex justify-content-between align-items-center">
-                <h5 class="card-title fw-semibold">Data Laporan Pada {{ now()->format('m-d-Y')}}</h5>
-                <div class="d-flex gap-2">
-                    <a href="{{ route('transations.pdf') }}" class="btn btn-danger">Export PDF</a>
-                    <a href="{{ route('transations.excel') }}" class="btn btn-success">Export Excel</a>
-                </div>
+                <h5 class="card-title fw-semibold">Data Laporan Pada 
+                    <span class="text-info">{{ now()->format('d-m-Y')}}</span></h5>
+                @if(!empty($transations->where('status', 'success')) && count($transations->where('status', 'success')) > 0)
+                    <div class="d-flex gap-2">
+                        <a href="{{ route('transations.pdf') }}" class="btn btn-danger">Export PDF</a>
+                        <a href="{{ route('transations.excel') }}" class="btn btn-success">Export Excel</a>
+                    </div>
+                @endif
             </div>
             @if (session('success_deleted'))
                 <div class="alert alert-success text-center">

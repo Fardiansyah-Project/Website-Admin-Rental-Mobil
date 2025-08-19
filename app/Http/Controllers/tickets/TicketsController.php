@@ -169,6 +169,7 @@ class TicketsController extends Controller
             ],
             'status'           => 'required|in:pending,confirmed,cancelled,success',
             'type_carrier'     => 'required|string|max:255',
+            'plate_number'     => 'required|string',
             'price'            => 'required|numeric|min:0',
         ], [
             'id_driver.required'       => 'Silakan pilih sopir.',

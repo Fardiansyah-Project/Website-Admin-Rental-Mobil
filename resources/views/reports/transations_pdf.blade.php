@@ -20,7 +20,7 @@
     </style>
 </head>
 <body>
-    <h3>Laporan Transaksi Tahun {{ now()->format('m-d-Y') }} - Yang Telah Dikonfirmasi</h3>
+    <h3>Laporan Transaksi Tahun {{ now()->format('d-m-Y') }} - Yang Telah Dikonfirmasi</h3>
     <table>
         <thead>
             <tr>
