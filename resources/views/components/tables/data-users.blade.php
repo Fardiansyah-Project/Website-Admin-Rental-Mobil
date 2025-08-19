@@ -1,6 +1,6 @@
 <div class="card mt-4">
         <div class="card-body">
-            <h5 class="card-title fw-semibold mb-4">Data Pengemudi</h5>
+            <h5 class="card-title fw-semibold mb-4">Data Pengguna</h5>
             @if (session('success_deleted'))
                 <div class="alert alert-success text-center">
                     {{ session('success_deleted') }}
@@ -16,31 +16,29 @@
                     <thead class="table-light">
                         <tr>
                             <th>No</th>
-                            <th>Nama Supir</th>
+                            <th>Nama</th>
                             <th>Email</th>
-                            <th>Nomor Telp</th>
-                            <th>Alamat</th>
-                            <th>Jenis Kendaraan</th>
-                            <th>Nomor Kendaraan</th>
-                            <th>Nomor SIM</th>
-                            <th>Status</th>
+                            <th>Password</th>
+                            <th>Posisi</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($data as $driver)
+                        @foreach($users as $u)
                             <tr>
-                                <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}</td>
-                                <td>{{ $driver->name_driver }}</td>
-                                <td>{{ $driver->email }}</td>
-                                <td>{{ $driver->phone_number }}</td>
-                                <td>{{ $driver->address }}</td>
-                                <td>{{ $driver->vehicle_type }}</td>
-                                <td>{{ $driver->vehicle_plate_number }}</td>
-                                <td>{{ $driver->license_number }}</td>
-                                <td>{{ $driver->status }}</td>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $u->name }}</td>
+                                <td>{{ $u->email }}</td>
                                 <td>
-                                    <a href="{{ route('drivers.edit', $driver->id) }}" class="btn btn-sm btn-warning"
+                                    @if(empty($u->plain_password) || $u->role == 'superadmin')
+                                        <p>******</p>
+                                    @elseif(!empty($u->plain_password))
+                                        {{ $u->plain_password}}
+                                    @endif
+                                </td>
+                                <td>{{ $u->role }}</td>
+                                <td>
+                                    <a href="{{ route('users.edit', $u->id) }}"class="btn btn-sm btn-warning"
                                         title="Edit">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit"
                                             width="20" height="20" viewBox="0 0 24 24" stroke-width="2"
@@ -51,11 +49,11 @@
                                             <path d="M3 17v4h4l11 -11a2.828 2.828 0 0 0 -4 -4l-11 11" />
                                         </svg>
                                     </a>
-                                    <form action="{{ route('drivers.deleted', $driver->id) }}" method="POST"
+                                    <form action="{{ route('users.destroy', $u->id) }}" method="POST"
                                         style="display:inline-block;"
                                         onsubmit="return confirm('Yakin ingin menghapus data ini?');">
                                         @csrf
-                                        @method('POST')
+                                        @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-danger" title="Hapus">
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                 class="icon icon-tabler icon-tabler-trash" width="20" height="20"
@@ -72,14 +70,13 @@
                                     </form>
                                 </td>
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="9" class="text-center text-secondary">Data supir belum tersedia.</td>
-                            </tr>
-                        @endforelse
+                        @endforeach
+                        @if(count($users) == 0)
+                            <td colspan="9" class="text-center text-secondary">Data pengguna lain belum tersedia.</td>
+                        @endif
                     </tbody>
                 </table>
-                {{ $data->links() }}
+                {{ $users->links() }}
             </div>
         </div>
     </div>

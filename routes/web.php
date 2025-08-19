@@ -6,6 +6,7 @@ use App\Http\Controllers\transaktions\TransaktionsConroller;
 use App\Http\Controllers\drivers\DriversController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\tickets\TicketsController;
+use App\Http\Controllers\profile\ProfileController;
 use App\Http\Controllers\UserManagementController;
 
 
@@ -39,3 +40,10 @@ Route::delete('/tickets/destroy/{id}', [TicketsController::class, 'destroy'])->m
 Route::get('/transations', [TransaktionsConroller::class, 'transations'])->middleware('auth')->name('transations');
 Route::get('/transations/pdf', [TransaktionsConroller::class, 'exportPDF'])->middleware('auth')->name('transations.pdf');
 Route::get('/transations/excel', [TransaktionsConroller::class, 'exportExcel'])->middleware('auth')->name('transations.excel');
+
+Route::get('/profile/edit/{id}', [ProfileController::class, 'edit'])->middleware('auth')->name('profile.edit');
+Route::put('/profile/update/{id}', [ProfileController::class, 'update'])->middleware('auth')->name('profile.update');
+Route::get('/profile/editPassword/{id}', [ProfileController::class, 'editPassword'])->middleware('auth')->name('profile.editPassword');
+
+Route::put('/profile/updatePassword/{id}', [ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
+

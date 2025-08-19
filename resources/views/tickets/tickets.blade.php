@@ -3,7 +3,7 @@
     <div class="card">
       <div class="card-body">
         <h5 class="card-title fw-semibold mb-4">
-          <i class="ti ti-ticket"></i> Form Ticket
+          <i class="ti ti-ticket"></i> Formulir Ticket
         </h5>
         <div class="card">
           <div class="card-body">

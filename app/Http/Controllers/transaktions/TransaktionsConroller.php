@@ -16,20 +16,22 @@ class TransaktionsConroller extends Controller
         $transations = TicketsModel::with('driver')
         ->where('status', 'success')
         ->orderBy('order_date', 'desc')
-        ->get([
-            'ticket_number',
-            'passenger_name',
-            'destination',
-            'order_date',
-            'departure_date',
-            'departure_time',
-            'seat_number',
-            'status',
-            'type_carrier',
-            'plate_number',
-            'price',
-            'id_driver',
-        ]);
+        // ->get([
+        //     'ticket_number',
+        //     'passenger_name',
+        //     'destination',
+        //     'order_date',
+        //     'departure_date',
+        //     'departure_time',
+        //     'seat_number',
+        //     'status',
+        //     'type_carrier',
+        //     'plate_number',
+        //     'price',
+        //     'id_driver',
+        // ])
+        ->paginate(20);
+
 
         return view('reports.transations', compact('transations'));
     }

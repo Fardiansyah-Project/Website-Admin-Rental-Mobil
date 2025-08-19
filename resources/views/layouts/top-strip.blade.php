@@ -6,7 +6,10 @@
     </div>
     <div class="d-lg-flex align-items-center gap-2">
         <h3 class="text-white mb-2 mb-lg-0 fs-5 text-center">
-            Selamat datang, {{ Auth::user()->name }}
+            Selamat datang, 
+            <a href="{{ url('profile/edit/' . Auth::user()->id) }}">
+                {{ Auth::user()->name }} 
+            </a>
         </h3>
     </div>
 </div>

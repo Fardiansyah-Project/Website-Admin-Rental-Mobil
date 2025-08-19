@@ -3,7 +3,7 @@
     <div class="card mt-4">
         <div class="card-body">
             <div class="card-title d-flex justify-content-between align-items-center">
-                <h5 class="card-title fw-semibold">Data Laporan</h5>
+                <h5 class="card-title fw-semibold">Data Laporan Pada {{ now()->format('m-d-Y')}}</h5>
                 <div class="d-flex gap-2">
                     <a href="{{ route('transations.pdf') }}" class="btn btn-danger">Export PDF</a>
                     <a href="{{ route('transations.excel') }}" class="btn btn-success">Export Excel</a>
@@ -41,7 +41,7 @@
                     <tbody>
                         @forelse($transations as $index => $data)
                             <tr>
-                                <td>{{ $index + 1 }}</td>
+                                <td>{{ ($transations->currentPage() - 1) * $transations->perPage() + $loop->iteration }}</td>
                                 <td>{{ $data->ticket_number }}</td>
                                 <td>{{ $data->passenger_name }}</td>
                                 <td>{{ $data->destination }}</td>
@@ -67,11 +67,12 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="9" class="text-center">Data supir belum tersedia.</td>
+                                <td colspan="13" class="text-center text-secondary">Data supir belum tersedia.</td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
+                {{ $transations->links() }}
             </div>
         </div>
     </div>

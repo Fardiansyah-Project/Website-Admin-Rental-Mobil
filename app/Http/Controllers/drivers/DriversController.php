@@ -11,7 +11,7 @@ class DriversController extends Controller
     public function index()
     {
         $data = DriversModel::paginate(5);
-        return view('pages.driver', compact('data'));
+        return view('drivers.driver', compact('data'));
     }
 
     public function store(Request $request)
@@ -24,7 +24,7 @@ class DriversController extends Controller
             'vehicle_type' => 'required|string',
             'vehicle_plate_number' => 'required|string|unique:drivers_models,vehicle_plate_number',
             'license_number' => 'required|numeric|unique:drivers_models,license_number',
-            'status' => 'nullable|in:Aktif,Tidak sedang berkendara'
+            'status' => 'nullable|in:Aktif,Tersedia'
         ], [
             'name_driver.required' => 'Nama driver wajib diisi.',
             'name_driver.string' => 'Nama driver harus berupa teks.',
@@ -45,7 +45,7 @@ class DriversController extends Controller
             'license_number.required' => 'Nomor SIM wajib diisi.',
             'license_number.numeric' => 'Nomor SIM harus berupa angka.',
             'license_number.unique' => 'Nomor SIM sudah terdaftar.',
-            'status.in' => 'Status harus "Aktif" atau "Tidak sedang berkendara".'
+            'status.in' => 'Status harus "Aktif" atau "Tersedia".'
         ]);
 
         $data = new DriversModel();
@@ -69,7 +69,7 @@ class DriversController extends Controller
     public function edit($id)
     {
         $data = DriversModel::find($id);
-        return view('pages.driverEdit', compact('data'));
+        return view('drivers.driverEdit', compact('data'));
     }
 
     public function update(Request $request, $id)

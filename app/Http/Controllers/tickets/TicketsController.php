@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\TicketsModel;
 use App\Models\DriversModel;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class TicketsController extends Controller
 {
@@ -46,7 +47,14 @@ class TicketsController extends Controller
                 'order_date'       => 'required|date',
                 'departure_date'  => 'required|date|after_or_equal:order_date',
                 'departure_time'  => 'required',
-                'seat_number'      => 'required|string|max:5',
+                'seat_number'     => [
+                        'required',
+                        'string',
+                        'max:5',
+                        Rule::unique('tickets_models')->where(function ($query) use ($request) {
+                            return $query->where('plate_number', $request->plate_number);
+                    })
+                ],
                 'status'           => 'required|in:pending,confirmed,cancelled',
                 'type_carrier'     => 'required|string|max:255',
                 'plate_number'     => 'required|string',
@@ -75,6 +83,7 @@ class TicketsController extends Controller
                 'seat_number.required'     => 'Nomor kursi wajib diisi.',
                 'seat_number.string'       => 'Nomor kursi harus berupa teks.',
                 'seat_number.max'          => 'Nomor kursi maksimal 5karakter.',
+                'seat_number.unique'       => 'Nomor kursi ini sudah terpakai di mobil yang sama',
 
                 'status.required'          => 'Status wajib diisi.',
                 'status.in'                => 'Status hanya boleh Pending, Confirmed, atau Cancelled.',
@@ -108,6 +117,10 @@ class TicketsController extends Controller
             $ticket->price = $request->price;
             $ticket->save();
 
+            if(!$ticket->save()){
+                return redirect()->route('tickets.index')->with('success', 'Tiket gagal ditambahkan: ');
+            }
+
             return redirect()->route('tickets.index')->with('success', 'Tiket berhasil ditambahkan: ');
         } catch (Throwable $th) {
             $errorMessage = $th->getMessage();
@@ -130,7 +143,7 @@ class TicketsController extends Controller
 
         $driverBusy = TicketsModel::where('id_driver', $request->id_driver)
             ->where('status', 'confirmed')
-            ->where('id', '!=', $id) // selain tiket yang sedang diupdate
+            ->where('id', '!=', $id)
             ->exists();
 
         if ($driverBusy && $request->status === 'confirmed') {
@@ -146,7 +159,14 @@ class TicketsController extends Controller
             'order_date'       => 'required|date',
             'departure_date'  => 'required|date|after_or_equal:order_date',
             'departure_time'  => 'required',
-            'seat_number'      => 'required|string|max:10',
+            'seat_number' => [
+                'required',
+                'string',
+                'max:5',
+                Rule::unique('tickets_models')->where(function ($query) use ($request) {
+                    return $query->where('plate_number', $request->plate_number);
+                })->ignore($ticket->id)
+            ],
             'status'           => 'required|in:pending,confirmed,cancelled,success',
             'type_carrier'     => 'required|string|max:255',
             'price'            => 'required|numeric|min:0',
@@ -174,6 +194,7 @@ class TicketsController extends Controller
             'seat_number.required'     => 'Nomor kursi wajib diisi.',
             'seat_number.string'       => 'Nomor kursi harus berupa teks.',
             'seat_number.max'          => 'Nomor kursi maksimal 5karakter.',
+            'seat_number.unique'       => 'Nomor kursi ini sudah terpakai di mobil yang sama',
 
             'status.required'          => 'Status wajib diisi.',
             'status.in'                => 'Status hanya boleh Pending, Confirmed, atau Cancelled.',
@@ -225,7 +246,7 @@ class TicketsController extends Controller
         DriversModel::where('id', $driverId)
         ->update(['status' => 'Tersedia']);
 
-        if (!$ticket) {
+        if (!$ticket->delete()) {
             return redirect()->route()->with('error_deleted', 'Tiket tidak berhasil dihapus');
         }
 

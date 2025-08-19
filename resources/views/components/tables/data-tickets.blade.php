@@ -30,9 +30,9 @@
           </tr>
         </thead>
         <tbody>
-          @forelse($tickets as $index => $ticket)
+          @forelse($tickets as $ticket)
             <tr>
-              <td>{{ $loop->iteration }}</td>
+              <td>{{ ($tickets->currentPage() - 1) * $tickets->perPage() + $loop->iteration }}</td>
               <td>{{ $ticket->ticket_number }}</td>
               <td>{{ optional($ticket->driver)->name_driver }}</td>
               <td>{{ $ticket->passenger_name }}</td>
@@ -70,11 +70,12 @@
             </tr>
           @empty
             <tr>
-              <td colspan="14" class="text-center">Data tiket belum tersedia.</td>
+              <td colspan="14" class="text-center text-secondary">Data tiket belum tersedia.</td>
             </tr>
           @endforelse
         </tbody>
       </table>
+      {{ $tickets->links() }}
     </div>
   </div>
 </div>
