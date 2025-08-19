@@ -15,8 +15,7 @@ class UserManagementController extends Controller
 
     public function index()
     {
-        // $users = User::where('id', '!=', auth()->id())->get();
-        $users = User::paginate(5);
+        $users = User::where('id', '!=', auth()->id())->paginate(5);
         return view('user-manegement.userManagement', compact('users'));
     }
 
@@ -60,7 +59,7 @@ class UserManagementController extends Controller
     {
         // Cegah edit dirinya sendiri
         if ($user->id === auth()->id()) {
-            abort(403, 'Tidak dapat mengedit diri sendiri');
+            abort(403, 'Tidak dapat mengedit diri sendiri pergi kehalaman ');
         }
 
         return view('user-manegement.userEdit', compact('user'));
@@ -71,7 +70,7 @@ class UserManagementController extends Controller
         $plainPassword = Str::random(8);
 
         if ($user->id === auth()->id()) {
-            abort(403, 'Tidak dapat mengupdate diri sendiri');
+            abort(403, 'Pergi kehalaman edit profile untuk mengubah data sendiri');
         }
         $request->validate([
             'name'     => 'required|string|max:255',

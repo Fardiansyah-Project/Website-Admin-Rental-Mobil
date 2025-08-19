@@ -4,7 +4,7 @@
 <div class="card">
     <div class="card-body">
         <h5 class="card-title fw-semibold mb-4">
-            <i class="ti ti-ticket"></i> Form Edit Tiket
+            <i class="ti ti-ticket"></i> Edit Data Tiket
         </h5>
         <div class="card">
             <div class="card-body">

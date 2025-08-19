@@ -20,12 +20,18 @@
                         <i class="ti ti-settings fs-9"></i>
                     </button>
                     <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
-                        <div class="message-body d-flex justify-content-center align-items-center py-3">
+                        <div class="message-body py-3 px-4">
+                            <a href="{{ url('profile/edit/' . Auth::user()->id) }}" class="flex items-center gap-2 py-2 px-3 hover:bg-gray-100 rounded-md transition-colors duration-200">
+                                <ti class="ti ti-user fs-9"></ti>
+                                <span class="text-sm font-medium text-gray-700">Edit Profil</span>
+                            </a>
+
+                            <hr class="my-2 border-gray-200">
                             <form action="{{ route('logout.auth') }}" method="post">
                                 @csrf
-                                <button type="submit"
-                                    class="btn btn-outline-primary d-block w-100">
-                                    Logout
+                                <button type="submit" class="flex items-center justify-center gap-2 w-full py-2 px-3 text-red-500 hover:bg-red-50 rounded-md transition-colors duration-200 btn btn-outline-danger align-items-center">
+                                    <i class="ti ti-door-exit fs-5"></i>
+                                    <span class="text-sm font-medium">Logout</span>
                                 </button>
                             </form>
                         </div>

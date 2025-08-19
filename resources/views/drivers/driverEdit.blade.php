@@ -2,7 +2,7 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title fw-semibold mb-3">Edit Data</h5>
+            <h5 class="card-title fw-semibold mb-3">Edit Data Drivers</h5>
             <div class="card">
                 <div class="card-body">
                     <form method="POST" action="{{ route('drivers.update', $data->id) }}">

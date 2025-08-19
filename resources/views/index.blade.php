@@ -10,8 +10,12 @@
                         <div class="row align-items-center">
                             <div class="col-7">
                                 <h4 class="fw-semibold mb-3">
-                                    {{ $tickets->where('status', 'success')->count('status')}}
-                                    <span class="text-secondary">Tiket terjual</span>
+                                    @if(count($tickets) == 0)
+                                        <span class="text-secondary fs-6">Belum ada tiket terjual</span>
+                                    @else
+                                        {{ $tickets->where('status', 'success')->count('status')}}
+                                        <span class="text-secondary">Tiket terjual</span>
+                                    @endif
                                 </h4>
                                 <div class="d-flex align-items-center mb-2">
                                     <span
@@ -36,7 +40,13 @@
                         <h5 class="card-title mb-10 fw-semibold">Pendapatan saat ini</h5>
                         <div class="row align-items-center">
                             <div class="col-7">
-                                <h4 class="fw-semibold mb-3">Rp{{ number_format($tickets->where('status', 'success')->sum('price'), 0, ',', '.') }}</h4>
+                                <h4 class="fw-semibold mb-3">
+                                    @if(count($tickets) == 0)
+                                        <span class="text-secondary fs-6">Belum ada penghasilan</span>
+                                    @else
+                                        Rp{{ number_format($tickets->where('status', 'success')->sum('price'), 0, ',', '.') }}
+                                    @endif
+                                </h4>
                                 <div class="d-flex align-items-center mb-2">
                                     <span
                                         class="me-1 rounded-circle bg-light-success round-20 d-flex align-items-center justify-content-center">
@@ -60,8 +70,13 @@
                         <h5 class="card-title mb-10 fw-semibold">Jumlah driver tersedia saat ini</h5>
                         <div class="row align-items-center">
                             <div class="col-7">
-                                <h4 class="fw-semibold mb-3">{{ $drivers->where('status', 'Tersedia')->count($drivers) }}
-                                    <span class="text-secondary">Driver tersedia</span>
+                                <h4 class="fw-semibold mb-3">
+                                    @if(count($drivers) == 0)
+                                        <span class="text-secondary fs-6">Data supir belum tersedia</span>
+                                    @else
+                                        {{ $drivers->where('status', 'Tersedia')->count($drivers) }}
+                                        <span class="text-secondary">Driver tersedia</span>
+                                    @endif
                                 </h4>
                                 <div class="d-flex align-items-center mb-2">
                                     <span
