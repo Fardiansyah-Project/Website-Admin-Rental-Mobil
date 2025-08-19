@@ -46,7 +46,7 @@ class UserManagementController extends Controller
             'name'     => $request->name,
             'email'    => $request->email,
             'password' => Hash::make($plainPassword),
-            'plain_password' => $plainPassword,
+            // 'plain_password' => $plainPassword,
             'role'     => $request->role ?? 'admin',
         ]);
 
@@ -57,7 +57,6 @@ class UserManagementController extends Controller
 
     public function edit(User $user)
     {
-        // Cegah edit dirinya sendiri
         if ($user->id === auth()->id()) {
             abort(403, 'Tidak dapat mengedit diri sendiri pergi kehalaman ');
         }
@@ -89,9 +88,11 @@ class UserManagementController extends Controller
         ]);
 
         $data = $request->only(['name', 'email', 'role']);
-        if ($request->filled('password')) {
-            $data['password'] = Hash::make($plainPassword);
-        }
+
+        $data['password'] = Hash::make($plainPassword);
+        // $data['plain_password'] = $plainPassword;
+
+        session()->flash('new_user_password', $plainPassword);
 
         $user->update($data);
 

@@ -18,7 +18,7 @@
                             <th>No</th>
                             <th>Nama</th>
                             <th>Email</th>
-                            <th>Password</th>
+                            <!-- <th>Password</th> -->
                             <th>Posisi</th>
                             <th>Aksi</th>
                         </tr>
@@ -29,13 +29,13 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $u->name }}</td>
                                 <td>{{ $u->email }}</td>
-                                <td>
+                                <!-- <td>
                                     @if(empty($u->plain_password) || $u->role == 'superadmin')
                                         <p>******</p>
                                     @elseif(!empty($u->plain_password))
                                         {{ $u->plain_password}}
                                     @endif
-                                </td>
+                                </td> -->
                                 <td>{{ $u->role }}</td>
                                 <td>
                                     <a href="{{ route('users.edit', $u->id) }}"class="btn btn-sm btn-warning"

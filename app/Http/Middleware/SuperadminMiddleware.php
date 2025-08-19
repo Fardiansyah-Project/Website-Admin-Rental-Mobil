@@ -20,6 +20,6 @@ class SuperadminMiddleware
             return $next($request);
         }
 
-        abort(403, 'Unauthorized action.');
+        abort(403, 'Halaman ini sangat privasi.');
     }
 }
